@@ -1,0 +1,16 @@
+<div class="field-group $auiparams.name">
+    <label for="$auiparams.name">
+        $auiparams.label
+    </label>
+    <span class="element-wrapper">
+                #set($auiparams.class = "select")
+                <select name="$auiparams.name" id="$auiparams.name" class="$auiparams.class">
+                    #set($projects = $action.getProjects())
+                    #foreach($project in $projects)
+                        <option value="$project.getKey()">$project.getName()</option>
+                    #end
+                </select>
+            </span>
+    #set($description = "새 이슈가 생성된 기본 프로젝트.")
+    <div class="description">$description</div>
+</div>

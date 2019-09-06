@@ -1,0 +1,134 @@
+## couple of available navigation helpers
+#* @vtlvariable name="action" type="com.atlassian.jira.plugins.mail.customhandler.EditDemoHandlerDetailsWebAction" *#
+#* @vtlvariable name="accessor" type="com.atlassian.jira.component.ComponentAccessor" *#
+#set ($modifierKey = $action.browserUtils.getModifierKey())
+#set ($submitAccessKey = $i18n.getText('AUI.form.submit.button.accesskey'))
+#set ($submitTitle = $i18n.getText('AUI.form.submit.button.tooltip', [$submitAccessKey, $modifierKey]))
+#set ($cancelAccessKey = $i18n.getText('AUI.form.cancel.link.accesskey'))
+#set ($cancelTitle = $i18n.getText('AUI.form.cancel.link.tooltip', [$cancelAccessKey, $modifierKey]))
+<html>
+<head>
+    <title>$action.handlerName</title>
+</head>
+<body>
+<form class="aui" action="EditDemoHandlerDetails.jspa" method="POST" name="mailHandlerForm" id="mailHandlerForm">
+    <div class="form-body">
+        <h2>$action.handlerName</h2>
+        <span class="global-errors-location">
+            #if ($action.getHasErrorMessages())
+                    #foreach ($error in $action.getFlushedErrorMessages())
+                #AUImessage("error" "" $textutils.htmlEncode(${error}) "" "" "" "true")
+            #end
+                #end
+        </span>
+        <input type="hidden" name="atl_token" value="$atl_token">
+
+        #set($auiparams = $map.build("name", "project", "label", "프로젝트"))
+
+        <div class="field-group $auiparams.name">
+            <label for="$auiparams.name">
+                $auiparams.label
+            </label>
+            <span class="element-wrapper">
+                #set($class = "select")
+                <select name="$auiparams.name" id="$auiparams.name" class="$class" onchange="selectChange(this)">
+                    #set($projects = $action.getProjects())
+                    #foreach($project in $projects)
+                        #set($projKey = $project.getKey())
+                        #set($projName = $project.getName())
+                        <option value="$projKey">$projName</option>
+                    #end
+                </select>
+            </span>
+            #set($description = "새 이슈가 생성된 기본 프로젝트.")
+            <div class="description">$description</div>
+        </div>
+
+        #set($auiparams = $map.build("name", "issuetype", "label", "이슈타입"))
+        <div class="field-group $auiparams.name">
+            <label for="$auiparams.name">
+                $auiparams.label
+            </label>
+            <span class="element-wrapper">
+                <select name="$auiparams.name" id="issuetype" class="$class"></select>
+            </span>
+            #set($description = "새 이슈의 기본 유형.")
+            <div class="description">$description</div>
+        </div>
+
+        <div class="buttons-container form-footer">
+            <div class="buttons">
+                #if ($action.editing)
+                    #set ($addButtonLabel = $i18n.getText('common.words.save'))
+                #else
+                    #set ($addButtonLabel = $i18n.getText('common.forms.add'))
+                #end
+                <input id="addButton" type="submit" class="button" value="$!addButtonLabel" accesskey="$submitAccessKey" title="$submitTitle">
+                <a href="IncomingMailServers.jspa" class="cancel" accesskey="$cancelAccessKey" title="$cancelTitle">$i18n.getText("AUI.form.cancel.link.text")</a>
+            </div>
+
+            <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+            <script type="text/javascript">
+                jQuery(document).ready(function () {
+                    jQuery.ajax({
+                        url : "http://118.37.27.228/jira/rest/api/2/project",
+                        
+                        method : "GET",
+                        
+                        dataType : "json",
+                    }).done(function (data) {
+                        jQuery.ajax({
+                            url : "http://118.37.27.228/jira/rest/api/2/project/" + data[0].key,
+
+                            method : "GET",
+
+                            dataType : "json",
+                        }).done(function (issue) {
+                            jQuery(issue.issueTypes).each(function (index, issueType) {
+                                console.log("FIRST ISSUETYPE==============")
+                                console.log(index + ":::::::" + issueType.id);
+                                console.log(index + ":::::::" + issueType.name);
+                                jQuery("#issuetype").append("<option value='" + issueType.id + "'>" + issueType.name + "</option>");
+                            })
+                            console.log("Key: " + data[0].key + ", Name: " + data[0].name);
+                        })
+                    })
+                })
+
+
+                function selectChange(e) {
+                    var baseUrl = "http://118.37.27.228/jira/rest/api/2/project/" + e.value;
+
+                    jQuery("#issuetype").empty();
+
+                    jQuery.ajax({
+                        url: baseUrl,
+
+                        method: "GET",
+
+                        dataType: "json",
+                    }).done(function (data) {
+                        jQuery(data.issueTypes).each(function (index, issueType) {
+                            console.log("TEST ISSUETYPE==============")
+                            console.log(index + ":::::::" + issueType.id);
+                            console.log(index + ":::::::" + issueType.name);
+                            jQuery("#issuetype").append("<option value='" + issueType.id + "'>" + issueType.name + "</option>");
+                        })
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        var errorString = (errorThrown === "") ?
+                                "Error. " : errorThrown + " (" + jqXHR.status + "): ";
+                        errorString += (jqXHR.responseText === "") ?
+                                "" : (jQuery.parseJSON(jqXHR.responseText).message) ?
+                                        jQuery.parseJSON(jqXHR.responseText).message :
+                                        jQuery.parseJSON(jqXHR.responseText).error.message;
+                        alert(errorString);
+                    });
+
+                };
+            </script>
+
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -1,0 +1,7 @@
+#* @implicitly included *#
+#* @vtlvariable name="atl_token" type="java.lang.String" *#
+#* @vtlvariable name="i18n" type="com.atlassian.jira.util.I18nHelper" *#
+#* @vtlvariable name="textutils" type="com.opensymphony.util.TextUtils" *#
+#* @vtlvariable name="auiparams" type="java.util.Map" *#
+#* @vtlvariable name="builder" type="com.atlassian.jira.util.collect.MapBuilder" *#
+#* @vtlvariable name="pageBuilderService" type="com.atlassian.webresource.api.assembler.PageBuilderService" *#

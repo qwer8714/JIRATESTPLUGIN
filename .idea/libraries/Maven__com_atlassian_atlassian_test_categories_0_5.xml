@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.atlassian:atlassian-test-categories:0.5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/atlassian-test-categories/0.5/atlassian-test-categories-0.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/atlassian-test-categories/0.5/atlassian-test-categories-0.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/atlassian/atlassian-test-categories/0.5/atlassian-test-categories-0.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,39 @@
+<atlassian-plugin key="${project.groupId}.${project.artifactId}" name="${project.name}" plugins-version="2">
+    <plugin-info>
+        <description>${project.description}</description>
+        <version>${project.version}</version>
+        <vendor name="${project.organization.name}" url="${project.organization.url}" />
+        <param name="plugin-icon">images/pluginIcon.png</param>
+        <param name="plugin-logo">images/pluginLogo.png</param>
+    </plugin-info>
+
+    <!-- add our i18n resource -->
+    <resource type="i18n" name="i18n" location="jira-custom-handler-plugin"/>
+    
+    <!-- add our web resources -->
+    <web-resource key="jira-custom-handler-plugin-resources" name="jira-custom-handler-plugin Web Resources">
+        <dependency>com.atlassian.auiplugin:ajs</dependency>
+        
+        <resource type="download" name="jira-custom-handler-plugin.css" location="/css/jira-custom-handler-plugin.css"/>
+        <resource type="download" name="jira-custom-handler-plugin.js" location="/js/jira-custom-handler-plugin.js"/>
+        <resource type="download" name="images/" location="/images"/>
+
+        <context>jira-custom-handler-plugin</context>
+    </web-resource>
+
+    <message-handler i18n-name-key="customhandler.name" key="customhandler"
+                     class="com.atlassian.jira.plugins.mail.customhandler.CustomHandler"
+                     add-edit-url="/secure/admin/EditDemoHandlerDetails!default.jspa" weight="0"/>
+
+    <webwork1 key="actions" name="Actions" class="java.lang.Object">
+        <actions>
+            <action name="com.atlassian.jira.plugins.mail.customhandler.EditDemoHandlerDetailsWebAction"
+                    alias="EditDemoHandlerDetails"
+                    roles-required="admin">
+                <view name="input">/view/editDemoHandlerDetails.vm</view>
+                <view name="securitybreach">/secure/views/securitybreach.jsp</view>
+            </action>
+        </actions>
+    </webwork1>
+    
+</atlassian-plugin>
