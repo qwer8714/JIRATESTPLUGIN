@@ -71,14 +71,14 @@
             <script type="text/javascript">
                 jQuery(document).ready(function () {
                     jQuery.ajax({
-                        url : "http://118.37.27.228/jira/rest/api/2/project",
+                        url : "http://localhost:2990/jira/rest/api/2/project",
                         
                         method : "GET",
                         
                         dataType : "json",
                     }).done(function (data) {
                         jQuery.ajax({
-                            url : "http://118.37.27.228/jira/rest/api/2/project/" + data[0].key,
+                            url : "http://localhost:2990/jira/rest/api/2/project/" + data[0].key,
 
                             method : "GET",
 
@@ -97,7 +97,7 @@
 
 
                 function selectChange(e) {
-                    var baseUrl = "http://118.37.27.228/jira/rest/api/2/project/" + e.value;
+                    var baseUrl = "http://localhost:2990/jira/rest/api/2/project/" + e.value;
 
                     jQuery("#issuetype").empty();
 
